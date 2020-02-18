@@ -39,3 +39,13 @@ function analyze() {
   xhr.send(fileData);
 }
 
+function downloadImage() {
+  var imageUrl = el("urlTextBox").value;
+  var image = document.images[0];
+  var downloadingImage = new Image();
+  downloadingImage.onload = function(){
+      image.src = imageUrl; 
+  };
+  downloadingImage.onload();
+}
+

@@ -9,7 +9,7 @@
   <div class='center'>
     <div class='title'>Classify aeroplane images</div>
     <p>
-      Use images of <strong>fighter planes</strong> <strong> passenger planes </strong>></p>
+      Use images of <strong>fighter planes</strong> or <strong> passenger planes </strong>></p>
     <div class='content'>
       <div class='no-display'>
         <input id='file-input'
@@ -20,6 +20,15 @@
                onchange='showPicked(this)'>
       </div>
       <button class='choose-file-button' type='button' onclick='showPicker()'>Select Image</button>
+
+      <h3>or</h3>
+
+      <h3>Input the url of the image in the text box</h3>
+
+      <input class="input-image-url" type="text" id="urlTextBox" value="">
+
+      <button onclick="downloadImage()">Get image</button>
+
       <div class='upload-label'>
         <label id='upload-label'>No file chosen</label>
       </div>
