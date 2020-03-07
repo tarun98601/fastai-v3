@@ -4,12 +4,17 @@
   <link rel='stylesheet' href='../static/style.css'>
   <script src='../static/client.js'></script>
 </head>
-<body>
+<body onload="Initialize()">
 <div>
   <div class='center'>
-    <div class='title'>Classify aeroplane images</div>
-    <p>
-      Use images of <strong>fighter planes</strong> <strong> passenger planes </strong>></p>
+    <div class='title'>Choose prediction you want to run.</div>
+    <div class='radio-group' id='modelChoice'>
+        <input type="radio" id="airplaneOptionButton" name="modelType" value="airplanes">
+        <label for="airplaneOptionButton" id="airplaneOptionButtonText"></label>
+        <input type="radio" id="movieGenreOptionButton" name="modelType" value="movieGenre">
+        <label for="movieGenreOptionButton" id="movieGenreOptionButtonText"></label>
+    </div>
+
     <div class='content'>
       <div class='no-display'>
         <input id='file-input'

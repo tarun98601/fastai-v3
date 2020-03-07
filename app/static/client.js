@@ -1,4 +1,6 @@
 var el = x => document.getElementById(x);
+var radioButton1;
+var radioButton2;
 
 function showPicker() {
   el("file-input").click();
@@ -36,6 +38,32 @@ function analyze() {
 
   var fileData = new FormData();
   fileData.append("file", uploadFiles[0]);
+  fileData.append("model", radioButtonSelected());
   xhr.send(fileData);
+}
+
+function Initialize(){
+  RenderRadioButtons();
+}
+
+function RenderRadioButtons(){
+  radioButton1 = el("airplaneOptionButton");
+  radioButton2 = el("movieGenreOptionButton");
+
+  radioButton1Text = el("airplaneOptionButtonText");
+  radioButton1Text.innerHTML = 'Airplane Classification'
+
+  radioButton2Text = el("movieGenreOptionButtonText");
+  radioButton2Text.innerHTML = 'Movie Genre Prediction'
+}
+
+function radioButtonSelected(){
+  if(radioButton1.checked == true){
+    return "airplane"
+  }
+  else if(radioButton2.checked == true){
+    return "movieGenre";
+  }
+  return "movieGenre"
 }
 
