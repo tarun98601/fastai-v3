@@ -9,10 +9,38 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-export_file_url = 'https://drive.google.com/uc?export=download&id=1TWh1RlwxDFG9_ekq-vEZ0tADiI6HV8RY'
-export_file_name = 'export-2.pkl'
+export_file_url1 = 'https://drive.google.com/uc?export=download&id=1TWh1RlwxDFG9_ekq-vEZ0tADiI6HV8RY'
+export_file_name1 = 'export-2.pkl'
 
-classes = ['fighter', 'passenger']
+export_file_url2 = 'https://drive.google.com/uc?export=download&id=17tBzfoiedFg6WsGxGsqC98zkp8qHh5Gj'
+export_file_name2 = 'export-moviePosters.pkl'
+
+classes1 = ['fighter', 'passenger']
+classes2 = ['Action',
+ 'Adventure',
+ 'Animation',
+ 'Biography',
+ 'Comedy',
+ 'Crime',
+ 'Documentary',
+ 'Drama',
+ 'Family',
+ 'Fantasy',
+ 'History',
+ 'Horror',
+ 'Music',
+ 'Musical',
+ 'Mystery',
+ 'News',
+ 'Reality-TV',
+ 'Romance',
+ 'Sci-Fi',
+ 'Short',
+ 'Sport',
+ 'Thriller',
+ 'War',
+ 'Western']
+
 path = Path(__file__).parent
 
 app = Starlette()
@@ -29,10 +57,10 @@ async def download_file(url, dest):
                 f.write(data)
 
 
-async def setup_learner():
-    await download_file(export_file_url, path / export_file_name)
+async def setup_learner(name, url, filename):
+    await download_file(url, path / filename)
     try:
-        learn = load_learner(path, export_file_name)
+        learn = load_learner(path, filename)
         return learn
     except RuntimeError as e:
         if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
@@ -44,8 +72,10 @@ async def setup_learner():
 
 
 loop = asyncio.get_event_loop()
-tasks = [asyncio.ensure_future(setup_learner())]
-learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
+tasks = [asyncio.ensure_future(setup_learner('airplane', export_file_url1, export_file_name1)), asyncio.ensure_future(setup_learner('movieGenre', export_file_url2, export_file_name2))]
+learn = {}
+learn['airplane'] = loop.run_until_complete(asyncio.gather(*tasks))[0]
+learn['movieGenre'] = loop.run_until_complete(asyncio.gather(*tasks))[1]
 loop.close()
 
 
@@ -59,8 +89,9 @@ async def homepage(request):
 async def analyze(request):
     img_data = await request.form()
     img_bytes = await (img_data['file'].read())
+    model_type = img_data['model']
     img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)[0]
+    prediction = learn[model_type].predict(img)[0]
     return JSONResponse({'result': str(prediction)})
 
 
